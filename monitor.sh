@@ -53,8 +53,11 @@ get_memory_usage(){
 	echo "$usage"
 }
 
-echo"RAM USAGE"
-get_memory_usage
+get_disk_usage(){
+	usage=$(df -h / | tail -n 1 | awk '{print $5}' | tr -d '%')
+
+	echo "$usage"
+}
 
 while true
 do
@@ -73,18 +76,24 @@ do
 	echo "----"
 	echo "TIME"
 	echo "----"
+
 	date
+
 	echo
 	echo "------"
 	echo "MEMORY:"
 	echo "------"
+
 	memory=$(get_memory_usage)
 	draw_bar "$memory"
+
 	echo
 	echo "----"
 	echo "DISK:"
 	echo "----"
-	df -h /
+
+	disk=$(get_disk_usage)
+	draw_bar "$disk"
 
 	sleep 5
 done
